@@ -25,3 +25,10 @@ The trade-off: this is a textual heuristic, not a geometric one. No timezone-bou
 - Bare identifiers (`UTC`, `GMT`) score 1 and lose to any slashed identifier.
 - Empty strings, leading/trailing slashes, and double slashes are rejected with `ValueError` — they are not valid IANA identifiers.
 - `select` raises `ValueError` on an empty candidate list and `TypeError` if any element is not a `ZoneCandidate`.
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
